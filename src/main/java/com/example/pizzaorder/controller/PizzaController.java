@@ -20,7 +20,7 @@ public class PizzaController {
     @GetMapping("/pizzas")
     public String list(Model model) {
 
-        List<Pizza> pizzas = pizzaService.findAll();
+        List<Pizza> pizzas = pizzaService.findActivePizzas();
 
         model.addAttribute("pizzas", pizzas);
 

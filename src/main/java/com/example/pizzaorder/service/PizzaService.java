@@ -17,7 +17,7 @@ public class PizzaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Pizza> findAll() {
-        return pizzaRepository.findAll();
+    public List<Pizza> findActivePizzas() {
+        return pizzaRepository.findByActiveOrderByPizzaIdAsc(1);
     }
 }
