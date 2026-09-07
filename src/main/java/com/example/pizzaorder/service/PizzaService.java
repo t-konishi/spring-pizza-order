@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PizzaService {
@@ -19,5 +20,10 @@ public class PizzaService {
     @Transactional(readOnly = true)
     public List<Pizza> findActivePizzas() {
         return pizzaRepository.findByActiveOrderByPizzaIdAsc(1);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Pizza> findById(Long pizzaId) {
+        return pizzaRepository.findById(pizzaId);
     }
 }

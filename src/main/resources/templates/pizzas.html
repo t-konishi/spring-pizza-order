@@ -22,7 +22,11 @@
     <tbody>
     <tr th:each="pizza : ${pizzas}">
         <td th:text="${pizza.pizzaId}"></td>
-        <td th:text="${pizza.pizzaName}"></td>
+        <td>
+            <a th:href="@{/pizzas/{id}(id=${pizza.pizzaId})}"
+               th:text="${pizza.pizzaName}">
+            </a>
+        </td>
         <td th:text="${pizza.category}"></td>
         <td th:text="${pizza.price}"></td>
         <td th:text="${pizza.description}"></td>

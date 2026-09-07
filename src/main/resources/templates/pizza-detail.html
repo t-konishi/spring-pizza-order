@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ピザ詳細</title>
+</head>
+<body>
+
+<h1>ピザ詳細</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <td th:text="${pizza.pizzaId}"></td>
+    </tr>
+    <tr>
+        <th>ピザ名</th>
+        <td th:text="${pizza.pizzaName}"></td>
+    </tr>
+    <tr>
+        <th>カテゴリ</th>
+        <td th:text="${pizza.category}"></td>
+    </tr>
+    <tr>
+        <th>価格</th>
+        <td th:text="${pizza.price}"></td>
+    </tr>
+    <tr>
+        <th>説明</th>
+        <td th:text="${pizza.description}"></td>
+    </tr>
+</table>
+
+<p>
+    <a th:href="@{/pizzas}">ピザ一覧へ戻る</a>
+</p>
+
+</body>
+</html>
