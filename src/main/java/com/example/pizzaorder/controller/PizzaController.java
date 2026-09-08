@@ -33,7 +33,7 @@ public class PizzaController {
     @GetMapping("/pizzas/{id}")
     public String detail(@PathVariable Long id, Model model) {
 
-        Pizza pizza = pizzaService.findById(id)
+        Pizza pizza = pizzaService.findActivePizzaById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(
                                 HttpStatus.NOT_FOUND,

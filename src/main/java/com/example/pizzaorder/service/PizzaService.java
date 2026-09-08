@@ -23,7 +23,7 @@ public class PizzaService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Pizza> findById(Long pizzaId) {
-        return pizzaRepository.findById(pizzaId);
+    public Optional<Pizza> findActivePizzaById(Long pizzaId) {
+        return pizzaRepository.findByPizzaIdAndActive(pizzaId, 1);
     }
 }
