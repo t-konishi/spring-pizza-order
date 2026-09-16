@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注文</title>
+</head>
+<body>
+
+<h1>注文</h1>
+
+<p>
+    ピザ：
+    <span th:text="${pizza.pizzaName}"></span>
+</p>
+
+<p>
+    価格：
+    <span th:text="${pizza.price}"></span>円
+</p>
+
+<p>
+    <label for="quantity">数量：</label>
+    <input id="quantity"
+           type="number"
+           name="quantity"
+           value="1"
+           min="1">
+</p>
+
+<p>
+    <a th:href="@{/pizzas/{id}(id=${pizza.pizzaId})}">
+        ピザ詳細へ戻る
+    </a>
+</p>
+
+</body>
+</html>

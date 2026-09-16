@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>ピザ詳細</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
 
 <h1>ピザ詳細</h1>
 
-<table border="1">
+<table>
     <tr>
         <th>ID</th>
         <td th:text="${pizza.pizzaId}"></td>
@@ -30,6 +38,12 @@
         <td th:text="${pizza.description}"></td>
     </tr>
 </table>
+
+<p>
+    <a th:href="@{/orders/new(pizzaId=${pizza.pizzaId})}">
+        注文する
+    </a>
+</p>
 
 <p>
     <a th:href="@{/pizzas}">ピザ一覧へ戻る</a>
