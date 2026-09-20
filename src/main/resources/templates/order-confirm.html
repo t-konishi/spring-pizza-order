@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注文内容確認</title>
+</head>
+<body>
+
+<h1>注文内容確認</h1>
+
+<p>
+    ピザ：
+    <span th:text="${pizza.pizzaName}"></span>
+</p>
+
+<p>
+    単価：
+    <span th:text="${pizza.price}"></span>円
+</p>
+
+<p>
+    数量：
+    <span th:text="${quantity}"></span>
+</p>
+
+<p>
+    合計：
+    <span th:text="${total}"></span>円
+</p>
+
+<p>
+    ※まだ注文は確定していません。
+</p>
+
+<p>
+    <a th:href="@{/orders/new(pizzaId=${pizza.pizzaId})}">
+        注文入力へ戻る
+    </a>
+</p>
+
+</body>
+</html>
