@@ -32,6 +32,22 @@
     ※まだ注文は確定していません。
 </p>
 
+<form th:action="@{/orders}"
+      th:object="${orderForm}"
+      method="post">
+
+    <input type="hidden"
+           th:field="*{pizzaId}">
+
+    <input type="hidden"
+           th:field="*{quantity}">
+
+    <p>
+        <button type="submit">注文を確定する</button>
+    </p>
+
+</form>
+
 <p>
     <a th:href="@{/orders/new(pizzaId=${pizza.pizzaId})}">
         注文入力へ戻る

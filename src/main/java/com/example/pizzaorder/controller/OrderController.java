@@ -3,6 +3,7 @@ package com.example.pizzaorder.controller;
 import com.example.pizzaorder.entity.Pizza;
 import com.example.pizzaorder.form.OrderForm;
 import com.example.pizzaorder.service.PizzaService;
+import com.example.pizzaorder.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,14 @@ import java.math.BigDecimal;
 public class OrderController {
 
     private final PizzaService pizzaService;
+    private final OrderService orderService;
 
-    public OrderController(PizzaService pizzaService) {
+    public OrderController(
+            PizzaService pizzaService,
+            OrderService orderService) {
+
         this.pizzaService = pizzaService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/orders/new")
@@ -48,8 +54,8 @@ public class OrderController {
         return "order-form";
     }
 
-    @PostMapping("/orders")
-    public String createOrder(
+    @PostMapping("/orders/confirm")
+    public String confirmOrder(
             @Valid @ModelAttribute("orderForm") OrderForm orderForm,
             BindingResult bindingResult,
             Model model) {
@@ -84,5 +90,28 @@ public class OrderController {
         model.addAttribute("total", total);
 
         return "order-confirm";
+    }
+
+    @PostMapping("/orders")
+    public String placeOrder(
+            @Valid @ModelAttribute("orderForm") OrderForm orderForm,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid order"
+            );
+        }
+
+        Long orderId = orderService.placeOrder(
+                orderForm.getPizzaId(),
+                orderForm.getQuantity()
+        );
+
+        model.addAttribute("orderId", orderId);
+
+        return "order-complete";
     }
 }

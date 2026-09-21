@@ -18,7 +18,7 @@
     <span th:text="${pizza.price}"></span>円
 </p>
 
-<form th:action="@{/orders}"
+<form th:action="@{/orders/confirm}"
       th:object="${orderForm}"
       method="post">
 
