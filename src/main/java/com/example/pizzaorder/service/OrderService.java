@@ -6,6 +6,8 @@ import com.example.pizzaorder.entity.PizzaOrder;
 import com.example.pizzaorder.repository.OrderItemRepository;
 import com.example.pizzaorder.repository.PizzaOrderRepository;
 import com.example.pizzaorder.repository.PizzaRepository;
+import com.example.pizzaorder.entity.Customer;
+import com.example.pizzaorder.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +19,25 @@ public class OrderService {
     private final PizzaRepository pizzaRepository;
     private final PizzaOrderRepository pizzaOrderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final CustomerRepository customerRepository;
 
     public OrderService(
             PizzaRepository pizzaRepository,
             PizzaOrderRepository pizzaOrderRepository,
-            OrderItemRepository orderItemRepository) {
+            OrderItemRepository orderItemRepository,
+            CustomerRepository customerRepository) {
 
         this.pizzaRepository = pizzaRepository;
         this.pizzaOrderRepository = pizzaOrderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Transactional
-    public Long placeOrder(Long pizzaId, Integer quantity) {
+    public Long placeOrder(
+            Long customerId,
+            Long pizzaId,
+            Integer quantity) {
 
         if (quantity == null || quantity < 1 || quantity > 99) {
             throw new IllegalArgumentException(
@@ -45,11 +53,19 @@ public class OrderService {
                         )
                 );
 
+        Customer customer = customerRepository
+                .findByCustomerIdAndActive(customerId, 1)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Customer not found or inactive"
+                        )
+                );
+
         BigDecimal subtotal = pizza.getPrice()
                 .multiply(BigDecimal.valueOf(quantity));
 
         PizzaOrder order = new PizzaOrder();
-        order.setCustomerId(1L);
+        order.setCustomerId(customer.getCustomerId());
         order.setOrderStatus("RECEIVED");
         order.setOrderChannel("WEB");
         order.setOrderTotal(subtotal);

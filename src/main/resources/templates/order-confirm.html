@@ -19,6 +19,16 @@
 </p>
 
 <p>
+    顧客：
+    <span th:text="${customer.customerName}"></span>
+</p>
+
+<p>
+    メールアドレス：
+    <span th:text="${customer.email}"></span>
+</p>
+
+<p>
     数量：
     <span th:text="${quantity}"></span>
 </p>
@@ -35,6 +45,9 @@
 <form th:action="@{/orders}"
       th:object="${orderForm}"
       method="post">
+
+    <input type="hidden"
+           th:field="*{customerId}">
 
     <input type="hidden"
            th:field="*{pizzaId}">

@@ -26,6 +26,29 @@
            th:field="*{pizzaId}">
 
     <p>
+        <label for="customerId">顧客：</label>
+
+        <select id="customerId"
+                th:field="*{customerId}"
+                required>
+
+            <option value="">
+                -- 顧客を選択してください --
+            </option>
+
+            <option th:each="customer : ${customers}"
+                    th:value="${customer.customerId}"
+                    th:text="${customer.customerName}">
+            </option>
+
+        </select>
+
+        <span th:if="${#fields.hasErrors('customerId')}"
+              th:errors="*{customerId}">
+    </span>
+    </p>
+
+    <p>
         <label for="quantity">数量：</label>
 
         <input id="quantity"

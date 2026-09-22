@@ -4,6 +4,8 @@ import com.example.pizzaorder.entity.Pizza;
 import com.example.pizzaorder.form.OrderForm;
 import com.example.pizzaorder.service.PizzaService;
 import com.example.pizzaorder.service.OrderService;
+import com.example.pizzaorder.entity.Customer;
+import com.example.pizzaorder.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.math.BigDecimal;
 
 @Controller
@@ -22,13 +25,16 @@ public class OrderController {
 
     private final PizzaService pizzaService;
     private final OrderService orderService;
+    private final CustomerService customerService;
 
     public OrderController(
             PizzaService pizzaService,
-            OrderService orderService) {
+            OrderService orderService,
+            CustomerService customerService) {
 
         this.pizzaService = pizzaService;
         this.orderService = orderService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/orders/new")
@@ -44,11 +50,15 @@ public class OrderController {
                         )
                 );
 
+        List<Customer> customers =
+                customerService.findActiveCustomers();
+
         OrderForm orderForm = new OrderForm();
         orderForm.setPizzaId(pizzaId);
         orderForm.setQuantity(1);
 
         model.addAttribute("pizza", pizza);
+        model.addAttribute("customers", customers);
         model.addAttribute("orderForm", orderForm);
 
         return "order-form";
@@ -78,8 +88,22 @@ public class OrderController {
         model.addAttribute("pizza", pizza);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute(
+                    "customers",
+                    customerService.findActiveCustomers()
+            );
+
             return "order-form";
         }
+
+        Customer customer = customerService
+                .findActiveCustomerById(orderForm.getCustomerId())
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "Customer not found or inactive"
+                        )
+                );
 
         Integer quantity = orderForm.getQuantity();
 
@@ -88,6 +112,7 @@ public class OrderController {
 
         model.addAttribute("quantity", quantity);
         model.addAttribute("total", total);
+        model.addAttribute("customer", customer);
 
         return "order-confirm";
     }
@@ -106,6 +131,7 @@ public class OrderController {
         }
 
         Long orderId = orderService.placeOrder(
+                orderForm.getCustomerId(),
                 orderForm.getPizzaId(),
                 orderForm.getQuantity()
         );
