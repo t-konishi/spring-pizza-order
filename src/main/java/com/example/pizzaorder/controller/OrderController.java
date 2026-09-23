@@ -133,7 +133,8 @@ public class OrderController {
         Long orderId = orderService.placeOrder(
                 orderForm.getCustomerId(),
                 orderForm.getPizzaId(),
-                orderForm.getQuantity()
+                orderForm.getQuantity(),
+                orderForm.getPaymentMethod()
         );
 
         model.addAttribute("orderId", orderId);

@@ -39,6 +39,16 @@
 </p>
 
 <p>
+    支払方法：
+    <span th:switch="${orderForm.paymentMethod}">
+        <span th:case="'CREDIT_CARD'">クレジットカード</span>
+        <span th:case="'CASH'">現金</span>
+        <span th:case="'QR'">QR決済</span>
+        <span th:case="'BANK_TRANSFER'">銀行振込</span>
+    </span>
+</p>
+
+<p>
     ※まだ注文は確定していません。
 </p>
 
@@ -54,6 +64,9 @@
 
     <input type="hidden"
            th:field="*{quantity}">
+
+    <input type="hidden"
+           th:field="*{paymentMethod}">
 
     <p>
         <button type="submit">注文を確定する</button>

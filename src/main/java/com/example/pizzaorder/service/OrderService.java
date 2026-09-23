@@ -8,6 +8,8 @@ import com.example.pizzaorder.repository.PizzaOrderRepository;
 import com.example.pizzaorder.repository.PizzaRepository;
 import com.example.pizzaorder.entity.Customer;
 import com.example.pizzaorder.repository.CustomerRepository;
+import com.example.pizzaorder.entity.Payment;
+import com.example.pizzaorder.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,28 +22,42 @@ public class OrderService {
     private final PizzaOrderRepository pizzaOrderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CustomerRepository customerRepository;
+    private final PaymentRepository paymentRepository;
 
     public OrderService(
             PizzaRepository pizzaRepository,
             PizzaOrderRepository pizzaOrderRepository,
             OrderItemRepository orderItemRepository,
-            CustomerRepository customerRepository) {
+            CustomerRepository customerRepository,
+            PaymentRepository paymentRepository) {
 
         this.pizzaRepository = pizzaRepository;
         this.pizzaOrderRepository = pizzaOrderRepository;
         this.orderItemRepository = orderItemRepository;
         this.customerRepository = customerRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Transactional
     public Long placeOrder(
             Long customerId,
             Long pizzaId,
-            Integer quantity) {
+            Integer quantity,
+            String paymentMethod) {
 
         if (quantity == null || quantity < 1 || quantity > 99) {
             throw new IllegalArgumentException(
                     "Quantity must be between 1 and 99"
+            );
+        }
+
+        if (!"CREDIT_CARD".equals(paymentMethod)
+                && !"CASH".equals(paymentMethod)
+                && !"QR".equals(paymentMethod)
+                && !"BANK_TRANSFER".equals(paymentMethod)) {
+
+            throw new IllegalArgumentException(
+                    "Invalid payment method"
             );
         }
 
@@ -82,6 +98,14 @@ public class OrderService {
         orderItem.setSubtotal(subtotal);
 
         orderItemRepository.save(orderItem);
+
+        Payment payment = new Payment();
+        payment.setOrderId(savedOrder.getOrderId());
+        payment.setPaymentMethod(paymentMethod);
+        payment.setPaymentStatus("PENDING");
+        payment.setAmount(subtotal);
+
+        paymentRepository.save(payment);
 
         return savedOrder.getOrderId();
     }

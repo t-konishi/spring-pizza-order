@@ -49,6 +49,40 @@
     </p>
 
     <p>
+        <label for="paymentMethod">支払方法：</label>
+
+        <select id="paymentMethod"
+                th:field="*{paymentMethod}"
+                required>
+
+            <option value="">
+                -- 支払方法を選択してください --
+            </option>
+
+            <option value="CREDIT_CARD">
+                クレジットカード
+            </option>
+
+            <option value="CASH">
+                現金
+            </option>
+
+            <option value="QR">
+                QR決済
+            </option>
+
+            <option value="BANK_TRANSFER">
+                銀行振込
+            </option>
+
+        </select>
+
+        <span th:if="${#fields.hasErrors('paymentMethod')}"
+              th:errors="*{paymentMethod}">
+    </span>
+    </p>
+
+    <p>
         <label for="quantity">数量：</label>
 
         <input id="quantity"
