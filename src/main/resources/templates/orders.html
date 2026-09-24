@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注文履歴</title>
+
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+<h1>注文履歴</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>注文番号</th>
+        <th>顧客ID</th>
+        <th>ステータス</th>
+        <th>チャネル</th>
+        <th>合計金額</th>
+        <th>注文日時</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.orderId}"></td>
+        <td th:text="${order.customerId}"></td>
+        <td th:text="${order.orderStatus}"></td>
+        <td th:text="${order.orderChannel}"></td>
+        <td>
+            <span th:text="${order.orderTotal}"></span>円
+        </td>
+        <td th:text="${order.orderedAt}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    <a th:href="@{/pizzas}">
+        ピザ一覧へ戻る
+    </a>
+</p>
+
+</body>
+</html>

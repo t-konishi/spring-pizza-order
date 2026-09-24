@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ORDERS")
@@ -29,6 +30,9 @@ public class PizzaOrder {
 
     @Column(name = "ORDER_TOTAL", nullable = false, precision = 10, scale = 0)
     private BigDecimal orderTotal;
+
+    @Column(name = "ORDERED_AT", insertable = false, updatable = false)
+    private LocalDateTime orderedAt;
 
     public PizzaOrder() {
     }
@@ -71,5 +75,9 @@ public class PizzaOrder {
 
     public void setOrderTotal(BigDecimal orderTotal) {
         this.orderTotal = orderTotal;
+    }
+
+    public LocalDateTime getOrderedAt() {
+        return orderedAt;
     }
 }

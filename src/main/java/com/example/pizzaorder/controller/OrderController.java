@@ -6,6 +6,7 @@ import com.example.pizzaorder.service.PizzaService;
 import com.example.pizzaorder.service.OrderService;
 import com.example.pizzaorder.entity.Customer;
 import com.example.pizzaorder.service.CustomerService;
+import com.example.pizzaorder.entity.PizzaOrder;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -140,5 +141,16 @@ public class OrderController {
         model.addAttribute("orderId", orderId);
 
         return "order-complete";
+    }
+
+    @GetMapping("/orders")
+    public String orderHistory(Model model) {
+
+        List<PizzaOrder> orders =
+                orderService.findOrderHistory();
+
+        model.addAttribute("orders", orders);
+
+        return "orders";
     }
 }

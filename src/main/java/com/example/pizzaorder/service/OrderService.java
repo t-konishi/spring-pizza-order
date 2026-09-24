@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -108,5 +109,11 @@ public class OrderService {
         paymentRepository.save(payment);
 
         return savedOrder.getOrderId();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PizzaOrder> findOrderHistory() {
+        return pizzaOrderRepository
+                .findAllByOrderByOrderIdDesc();
     }
 }
