@@ -7,6 +7,8 @@ import com.example.pizzaorder.service.OrderService;
 import com.example.pizzaorder.entity.Customer;
 import com.example.pizzaorder.service.CustomerService;
 import com.example.pizzaorder.entity.PizzaOrder;
+import com.example.pizzaorder.dto.OrderHistoryDto;
+import com.example.pizzaorder.dto.OrderDetailView;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.math.BigDecimal;
@@ -146,11 +149,32 @@ public class OrderController {
     @GetMapping("/orders")
     public String orderHistory(Model model) {
 
-        List<PizzaOrder> orders =
+        List<OrderHistoryDto> orders =
                 orderService.findOrderHistory();
 
         model.addAttribute("orders", orders);
 
         return "orders";
+    }
+
+    @GetMapping("/orders/{id}")
+    public String orderDetail(
+            @PathVariable Long id,
+            Model model) {
+
+        OrderDetailView detail =
+                orderService.findOrderDetail(id)
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.NOT_FOUND,
+                                        "Order not found"
+                                )
+                        );
+
+        model.addAttribute("order", detail.order());
+        model.addAttribute("items", detail.items());
+        model.addAttribute("payments", detail.payments());
+
+        return "order-detail";
     }
 }

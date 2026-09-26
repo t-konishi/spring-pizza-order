@@ -10,11 +10,14 @@ import com.example.pizzaorder.entity.Customer;
 import com.example.pizzaorder.repository.CustomerRepository;
 import com.example.pizzaorder.entity.Payment;
 import com.example.pizzaorder.repository.PaymentRepository;
+import com.example.pizzaorder.dto.OrderHistoryDto;
+import com.example.pizzaorder.dto.OrderDetailView;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -112,8 +115,24 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<PizzaOrder> findOrderHistory() {
+    public List<OrderHistoryDto> findOrderHistory() {
+        return pizzaOrderRepository.findOrderHistory();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<OrderDetailView> findOrderDetail(
+            Long orderId) {
+
         return pizzaOrderRepository
-                .findAllByOrderByOrderIdDesc();
+                .findOrderDetailById(orderId)
+                .map(order ->
+                        new OrderDetailView(
+                                order,
+                                orderItemRepository
+                                        .findByOrderIdOrderByOrderItemIdAsc(orderId),
+                                paymentRepository
+                                        .findByOrderIdOrderByPaymentIdAsc(orderId)
+                        )
+                );
     }
 }

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注文詳細</title>
+
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+<h1>注文詳細</h1>
+
+<h2>注文情報</h2>
+
+<table>
+    <tr>
+        <th>注文番号</th>
+        <td th:text="${order.orderId}"></td>
+    </tr>
+
+    <tr>
+        <th>顧客</th>
+        <td th:text="${order.customerName}"></td>
+    </tr>
+
+    <tr>
+        <th>メールアドレス</th>
+        <td th:text="${order.customerEmail}"></td>
+    </tr>
+
+    <tr>
+        <th>ステータス</th>
+        <td th:text="${order.orderStatus}"></td>
+    </tr>
+
+    <tr>
+        <th>チャネル</th>
+        <td th:text="${order.orderChannel}"></td>
+    </tr>
+
+    <tr>
+        <th>注文合計</th>
+        <td>
+            <span th:text="${order.orderTotal}"></span>円
+        </td>
+    </tr>
+
+    <tr>
+        <th>注文日時</th>
+        <td th:text="${order.orderedAt}"></td>
+    </tr>
+</table>
+
+
+<h2>注文明細</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>商品</th>
+        <th>単価</th>
+        <th>数量</th>
+        <th>小計</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.pizzaName}"></td>
+
+        <td>
+            <span th:text="${item.unitPrice}"></span>円
+        </td>
+
+        <td th:text="${item.quantity}"></td>
+
+        <td>
+            <span th:text="${item.subtotal}"></span>円
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h2>支払情報</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>支払ID</th>
+        <th>支払方法</th>
+        <th>ステータス</th>
+        <th>金額</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="payment : ${payments}">
+        <td th:text="${payment.paymentId}"></td>
+        <td th:text="${payment.paymentMethod}"></td>
+        <td th:text="${payment.paymentStatus}"></td>
+
+        <td>
+            <span th:text="${payment.amount}"></span>円
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<p>
+    <a th:href="@{/orders}">
+        注文履歴へ戻る
+    </a>
+</p>
+
+</body>
+</html>

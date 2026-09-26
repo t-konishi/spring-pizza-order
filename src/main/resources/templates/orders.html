@@ -21,7 +21,7 @@
     <thead>
     <tr>
         <th>注文番号</th>
-        <th>顧客ID</th>
+        <th>顧客名</th>
         <th>ステータス</th>
         <th>チャネル</th>
         <th>合計金額</th>
@@ -31,8 +31,12 @@
 
     <tbody>
     <tr th:each="order : ${orders}">
-        <td th:text="${order.orderId}"></td>
-        <td th:text="${order.customerId}"></td>
+        <td>
+            <a th:href="@{/orders/{id}(id=${order.orderId})}"
+               th:text="${order.orderId}">
+            </a>
+        </td>
+        <td th:text="${order.customerName}"></td>
         <td th:text="${order.orderStatus}"></td>
         <td th:text="${order.orderChannel}"></td>
         <td>
