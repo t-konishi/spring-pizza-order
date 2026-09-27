@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,36 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CustomerRepository customerRepository;
     private final PaymentRepository paymentRepository;
+
+    private static final Set<String> VALID_ORDER_STATUSES = Set.of(
+            "RECEIVED",
+            "CONFIRMED",
+            "PREPARING",
+            "READY",
+            "DELIVERED",
+            "CANCELLED"
+    );
+
+    private static final Map<String, List<String>> ORDER_STATUS_TRANSITIONS =
+            Map.of(
+                    "RECEIVED",
+                    List.of("CONFIRMED", "CANCELLED"),
+
+                    "CONFIRMED",
+                    List.of("PREPARING", "CANCELLED"),
+
+                    "PREPARING",
+                    List.of("READY"),
+
+                    "READY",
+                    List.of("DELIVERED"),
+
+                    "DELIVERED",
+                    List.of(),
+
+                    "CANCELLED",
+                    List.of()
+            );
 
     public OrderService(
             PizzaRepository pizzaRepository,
@@ -40,6 +72,13 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
         this.customerRepository = customerRepository;
         this.paymentRepository = paymentRepository;
+    }
+
+    public List<String> getAllowedNextStatuses(
+            String currentStatus) {
+
+        return ORDER_STATUS_TRANSITIONS
+                .getOrDefault(currentStatus, List.of());
     }
 
     @Transactional
@@ -134,5 +173,41 @@ public class OrderService {
                                         .findByOrderIdOrderByPaymentIdAsc(orderId)
                         )
                 );
+    }
+
+    @Transactional
+    public void updateOrderStatus(
+            Long orderId,
+            String newStatus) {
+
+        PizzaOrder order = pizzaOrderRepository
+                .findById(orderId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Order not found: " + orderId
+                        )
+                );
+
+        String currentStatus = order.getOrderStatus();
+
+        if (currentStatus.equals(newStatus)) {
+            return;
+        }
+
+        List<String> allowedNextStatuses =
+                ORDER_STATUS_TRANSITIONS.get(currentStatus);
+
+        if (allowedNextStatuses == null
+                || !allowedNextStatuses.contains(newStatus)) {
+
+            throw new IllegalStateException(
+                    currentStatus
+                            + " から "
+                            + newStatus
+                            + " へは変更できません"
+            );
+        }
+
+        order.setOrderStatus(newStatus);
     }
 }

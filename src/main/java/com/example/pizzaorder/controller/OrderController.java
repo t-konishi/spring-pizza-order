@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.math.BigDecimal;
@@ -175,6 +176,37 @@ public class OrderController {
         model.addAttribute("items", detail.items());
         model.addAttribute("payments", detail.payments());
 
+        model.addAttribute(
+                "allowedStatuses",
+                orderService.getAllowedNextStatuses(
+                        detail.order().orderStatus()
+                )
+        );
+
         return "order-detail";
+    }
+
+    @PostMapping("/orders/{id}/status")
+    public String updateOrderStatus(
+            @PathVariable Long id,
+            @RequestParam String orderStatus,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+
+            orderService.updateOrderStatus(
+                    id,
+                    orderStatus
+            );
+
+        } catch (IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "statusError",
+                    e.getMessage()
+            );
+        }
+
+        return "redirect:/orders/" + id;
     }
 }

@@ -58,6 +58,45 @@
     </tr>
 </table>
 
+<p th:if="${statusError}"
+   th:text="${statusError}">
+</p>
+
+<h2>注文ステータス更新</h2>
+
+<div th:if="${!#lists.isEmpty(allowedStatuses)}">
+
+    <form th:action="@{/orders/{id}/status(id=${order.orderId})}"
+          method="post">
+
+        <label for="orderStatus">変更先：</label>
+
+        <select id="orderStatus"
+                name="orderStatus"
+                required>
+
+            <option value="">
+                -- ステータスを選択してください --
+            </option>
+
+            <option th:each="status : ${allowedStatuses}"
+                    th:value="${status}"
+                    th:text="${status}">
+            </option>
+
+        </select>
+
+        <button type="submit">
+            更新
+        </button>
+
+    </form>
+
+</div>
+
+<p th:if="${#lists.isEmpty(allowedStatuses)}">
+    この注文はこれ以上ステータスを変更できません。
+</p>
 
 <h2>注文明細</h2>
 

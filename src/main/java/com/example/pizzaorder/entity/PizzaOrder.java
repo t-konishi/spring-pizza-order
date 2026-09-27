@@ -6,9 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.PreUpdate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "ORDERS")
@@ -33,6 +35,9 @@ public class PizzaOrder {
 
     @Column(name = "ORDERED_AT", insertable = false, updatable = false)
     private LocalDateTime orderedAt;
+
+    @Column(name = "UPDATED_AT", insertable = false)
+    private LocalDateTime updatedAt;
 
     public PizzaOrder() {
     }
@@ -79,5 +84,14 @@ public class PizzaOrder {
 
     public LocalDateTime getOrderedAt() {
         return orderedAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now(ZoneOffset.UTC);
     }
 }
