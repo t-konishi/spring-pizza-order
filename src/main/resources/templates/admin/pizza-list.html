@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizzaマスタ管理</title>
+
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Pizzaマスタ管理</h1>
+
+<p>
+    <a th:href="@{/admin/pizzas/new}">
+        新規登録
+    </a>
+</p>
+
+<p th:if="${message}"
+   th:text="${message}">
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>ピザ名</th>
+        <th>カテゴリ</th>
+        <th>価格</th>
+        <th>状態</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="pizza : ${pizzas}">
+
+        <td th:text="${pizza.pizzaId}"></td>
+
+        <td th:text="${pizza.pizzaName}"></td>
+
+        <td th:text="${pizza.category}"></td>
+
+        <td>
+            <span th:text="${pizza.price}"></span>円
+        </td>
+
+        <td th:text="${pizza.active == 1 ? '有効' : '無効'}">
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    <a th:href="@{/pizzas}">
+        ピザ一覧へ戻る
+    </a>
+</p>
+
+</body>
+</html>

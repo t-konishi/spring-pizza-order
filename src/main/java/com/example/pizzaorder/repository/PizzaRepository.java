@@ -10,4 +10,6 @@ public interface PizzaRepository extends JpaRepository<Pizza, Long> {
     List<Pizza> findByActiveOrderByPizzaIdAsc(Integer active);
 
     Optional<Pizza> findByPizzaIdAndActive(Long pizzaId, Integer active);
+
+    List<Pizza> findAllByOrderByPizzaIdAsc();
 }
