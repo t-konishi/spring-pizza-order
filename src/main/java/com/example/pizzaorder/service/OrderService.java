@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,15 +28,6 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CustomerRepository customerRepository;
     private final PaymentRepository paymentRepository;
-
-    private static final Set<String> VALID_ORDER_STATUSES = Set.of(
-            "RECEIVED",
-            "CONFIRMED",
-            "PREPARING",
-            "READY",
-            "DELIVERED",
-            "CANCELLED"
-    );
 
     private static final Map<String, List<String>> ORDER_STATUS_TRANSITIONS =
             Map.of(

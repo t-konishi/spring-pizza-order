@@ -6,7 +6,6 @@ import com.example.pizzaorder.service.PizzaService;
 import com.example.pizzaorder.service.OrderService;
 import com.example.pizzaorder.entity.Customer;
 import com.example.pizzaorder.service.CustomerService;
-import com.example.pizzaorder.entity.PizzaOrder;
 import com.example.pizzaorder.dto.OrderHistoryDto;
 import com.example.pizzaorder.dto.OrderDetailView;
 import jakarta.validation.Valid;
