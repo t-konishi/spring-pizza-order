@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza編集</title>
+</head>
+
+<body>
+
+<h1>Pizza編集</h1>
+
+<p>
+    ID：
+    <span th:text="${pizzaId}"></span>
+</p>
+
+<form th:action="@{/admin/pizzas/{id}(id=${pizzaId})}"
+      th:object="${pizzaForm}"
+      method="post">
+
+    <p>
+        <label for="pizzaName">
+            ピザ名：
+        </label>
+
+        <input id="pizzaName"
+               type="text"
+               th:field="*{pizzaName}">
+
+        <span th:if="${#fields.hasErrors('pizzaName')}"
+              th:errors="*{pizzaName}">
+        </span>
+    </p>
+
+    <p>
+        <label for="description">
+            説明：
+        </label>
+
+        <textarea id="description"
+                  th:field="*{description}">
+        </textarea>
+
+        <span th:if="${#fields.hasErrors('description')}"
+              th:errors="*{description}">
+        </span>
+    </p>
+
+    <p>
+        <label for="price">
+            価格：
+        </label>
+
+        <input id="price"
+               type="number"
+               min="0"
+               step="1"
+               th:field="*{price}">
+
+        <span th:if="${#fields.hasErrors('price')}"
+              th:errors="*{price}">
+        </span>
+    </p>
+
+    <p>
+        <label for="category">
+            カテゴリ：
+        </label>
+
+        <select id="category"
+                th:field="*{category}">
+
+            <option value="STANDARD">
+                STANDARD
+            </option>
+
+            <option value="MEAT">
+                MEAT
+            </option>
+
+            <option value="CHEESE">
+                CHEESE
+            </option>
+
+        </select>
+
+        <span th:if="${#fields.hasErrors('category')}"
+              th:errors="*{category}">
+        </span>
+    </p>
+
+    <p>
+        <button type="submit">
+            更新
+        </button>
+    </p>
+
+</form>
+
+<p>
+    <a th:href="@{/admin/pizzas}">
+        Pizzaマスタ一覧へ戻る
+    </a>
+</p>
+
+</body>
+</html>

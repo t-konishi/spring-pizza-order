@@ -37,6 +37,7 @@
         <th>カテゴリ</th>
         <th>価格</th>
         <th>状態</th>
+        <th>操作</th>
     </tr>
     </thead>
 
@@ -54,6 +55,12 @@
         </td>
 
         <td th:text="${pizza.active == 1 ? '有効' : '無効'}">
+        </td>
+
+        <td>
+            <a th:href="@{/admin/pizzas/{id}/edit(id=${pizza.pizzaId})}">
+                編集
+            </a>
         </td>
 
     </tr>

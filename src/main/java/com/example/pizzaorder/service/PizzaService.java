@@ -35,6 +35,11 @@ public class PizzaService {
         return pizzaRepository.findAllByOrderByPizzaIdAsc();
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Pizza> findPizzaById(Long pizzaId) {
+        return pizzaRepository.findById(pizzaId);
+    }
+
     @Transactional
     public Long createPizza(PizzaForm form) {
 
@@ -57,5 +62,24 @@ public class PizzaService {
                 pizzaRepository.save(pizza);
 
         return savedPizza.getPizzaId();
+    }
+
+    @Transactional
+    public void updatePizza(
+            Long pizzaId,
+            PizzaForm form) {
+
+        Pizza pizza = pizzaRepository
+                .findById(pizzaId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Pizza not found: " + pizzaId
+                        )
+                );
+
+        pizza.setPizzaName(form.getPizzaName());
+        pizza.setDescription(form.getDescription());
+        pizza.setPrice(form.getPrice());
+        pizza.setCategory(form.getCategory());
     }
 }
