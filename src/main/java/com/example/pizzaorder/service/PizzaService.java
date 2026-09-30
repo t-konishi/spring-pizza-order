@@ -82,4 +82,28 @@ public class PizzaService {
         pizza.setPrice(form.getPrice());
         pizza.setCategory(form.getCategory());
     }
+
+    @Transactional
+    public void updatePizzaActive(
+            Long pizzaId,
+            Integer active) {
+
+        if (active == null
+                || (active != 0 && active != 1)) {
+
+            throw new IllegalArgumentException(
+                    "Active must be 0 or 1"
+            );
+        }
+
+        Pizza pizza = pizzaRepository
+                .findById(pizzaId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Pizza not found: " + pizzaId
+                        )
+                );
+
+        pizza.setActive(active);
+    }
 }

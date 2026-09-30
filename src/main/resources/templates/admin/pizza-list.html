@@ -58,9 +58,41 @@
         </td>
 
         <td>
+
             <a th:href="@{/admin/pizzas/{id}/edit(id=${pizza.pizzaId})}">
                 編集
             </a>
+
+            <form th:if="${pizza.active == 1}"
+                  th:action="@{/admin/pizzas/{id}/active(id=${pizza.pizzaId})}"
+                  method="post"
+                  style="display:inline">
+
+                <input type="hidden"
+                       name="active"
+                       value="0">
+
+                <button type="submit">
+                    無効化
+                </button>
+
+            </form>
+
+            <form th:if="${pizza.active == 0}"
+                  th:action="@{/admin/pizzas/{id}/active(id=${pizza.pizzaId})}"
+                  method="post"
+                  style="display:inline">
+
+                <input type="hidden"
+                       name="active"
+                       value="1">
+
+                <button type="submit">
+                    有効化
+                </button>
+
+            </form>
+
         </td>
 
     </tr>
