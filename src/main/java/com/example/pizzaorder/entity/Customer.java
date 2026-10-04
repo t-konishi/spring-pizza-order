@@ -6,6 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.PreUpdate;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "CUSTOMERS")
@@ -27,6 +31,26 @@ public class Customer {
 
     @Column(name = "ACTIVE", nullable = false)
     private Integer active;
+
+    @Column(
+            name = "REGISTERED_AT",
+            insertable = false,
+            updatable = false
+    )
+    private LocalDateTime registeredAt;
+
+    @Column(
+            name = "CREATED_AT",
+            insertable = false,
+            updatable = false
+    )
+    private LocalDateTime createdAt;
+
+    @Column(
+            name = "UPDATED_AT",
+            insertable = false
+    )
+    private LocalDateTime updatedAt;
 
     public Customer() {
     }
@@ -69,5 +93,23 @@ public class Customer {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt =
+                LocalDateTime.now(ZoneOffset.UTC);
     }
 }

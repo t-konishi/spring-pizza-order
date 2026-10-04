@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer新規登録</title>
+</head>
+
+<body>
+
+<h1>Customer新規登録</h1>
+
+<form th:action="@{/admin/customers}"
+      th:object="${customerForm}"
+      method="post">
+
+    <p>
+        <label for="customerName">
+            顧客名：
+        </label>
+
+        <input id="customerName"
+               type="text"
+               th:field="*{customerName}">
+
+        <span th:if="${#fields.hasErrors('customerName')}"
+              th:errors="*{customerName}">
+        </span>
+    </p>
+
+    <p>
+        <label for="email">
+            メールアドレス：
+        </label>
+
+        <input id="email"
+               type="email"
+               th:field="*{email}">
+
+        <span th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}">
+        </span>
+    </p>
+
+    <p>
+        <label for="phone">
+            電話番号：
+        </label>
+
+        <input id="phone"
+               type="text"
+               th:field="*{phone}">
+
+        <span th:if="${#fields.hasErrors('phone')}"
+              th:errors="*{phone}">
+        </span>
+    </p>
+
+    <p>
+        <button type="submit">
+            登録
+        </button>
+    </p>
+
+</form>
+
+<p>
+    <a th:href="@{/admin/customers}">
+        Customerマスタ一覧へ戻る
+    </a>
+</p>
+
+</body>
+</html>

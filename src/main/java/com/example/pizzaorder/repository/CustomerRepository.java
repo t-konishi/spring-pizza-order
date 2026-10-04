@@ -15,4 +15,12 @@ public interface CustomerRepository
             Long customerId,
             Integer active
     );
+
+    List<Customer> findAllByOrderByCustomerIdAsc();
+
+    boolean existsByEmailIgnoreCase(String email);
+    boolean existsByEmailIgnoreCaseAndCustomerIdNot(
+            String email,
+            Long customerId
+    );
 }
