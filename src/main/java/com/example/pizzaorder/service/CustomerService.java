@@ -107,4 +107,29 @@ public class CustomerService {
                 form.getPhone()
         );
     }
+
+    @Transactional
+    public void updateCustomerActive(
+            Long customerId,
+            Integer active) {
+
+        if (active == null
+                || (active != 0 && active != 1)) {
+
+            throw new IllegalArgumentException(
+                    "Active must be 0 or 1"
+            );
+        }
+
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Customer not found: "
+                                        + customerId
+                        )
+                );
+
+        customer.setActive(active);
+    }
 }

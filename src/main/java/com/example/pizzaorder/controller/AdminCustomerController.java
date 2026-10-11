@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.server.ResponseStatusException;
@@ -177,6 +178,30 @@ public class AdminCustomerController {
         redirectAttributes.addFlashAttribute(
                 "message",
                 "顧客を更新しました。ID: " + id
+        );
+
+        return "redirect:/admin/customers";
+    }
+
+    @PostMapping("/{id}/active")
+    public String updateActive(
+            @PathVariable Long id,
+            @RequestParam Integer active,
+            RedirectAttributes redirectAttributes) {
+
+        customerService.updateCustomerActive(
+                id,
+                active
+        );
+
+        String message =
+                active == 1
+                        ? "顧客を有効化しました。ID: " + id
+                        : "顧客を無効化しました。ID: " + id;
+
+        redirectAttributes.addFlashAttribute(
+                "message",
+                message
         );
 
         return "redirect:/admin/customers";

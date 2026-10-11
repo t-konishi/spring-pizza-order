@@ -52,13 +52,43 @@
 
         <td th:text="${customer.phone}"></td>
 
-        <td th:text="${customer.active == 1 ? '有効' : '無効'}">
+        <td th:text="${customer.active == 1 ? '有効' : '無効'}"></td>
 
         <td>
             <a th:href="@{/admin/customers/{id}/edit(id=${customer.customerId})}">
                 編集
             </a>
-        </td>
+
+            <form th:if="${customer.active == 1}"
+                  th:action="@{/admin/customers/{id}/active(id=${customer.customerId})}"
+                  method="post"
+                  style="display:inline">
+
+                <input type="hidden"
+                       name="active"
+                       value="0">
+
+                <button type="submit">
+                    無効化
+                </button>
+
+            </form>
+
+            <form th:if="${customer.active == 0}"
+                  th:action="@{/admin/customers/{id}/active(id=${customer.customerId})}"
+                  method="post"
+                  style="display:inline">
+
+                <input type="hidden"
+                       name="active"
+                       value="1">
+
+                <button type="submit">
+                    有効化
+                </button>
+
+            </form>
+
         </td>
 
     </tr>
