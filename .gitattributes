@@ -1,2 +1,17 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Source code and configuration
+*.java text eol=lf
+
+# Source code and configuration
+*.html text eol=lf
+
+# Source code and configuration
+*.xml text eol=lf
+
+# Source code and configuration
+*.properties text eol=lf
+
+# Source code and configuration
+*.md text eol=lf
