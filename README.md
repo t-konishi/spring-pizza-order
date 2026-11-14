@@ -209,3 +209,8 @@ Metabase
 Qiita Advent Calendar 2026向けに、Windows PC 1台でOracleからBIまでのデータ基盤を構築する過程を紹介する予定です。
 
 記事公開後、こちらにリンクを追加します。
+
+## 10. ライセンス
+
+本プロジェクトはMITライセンスで公開しています。
+詳細は[LICENSE](LICENSE)をご覧ください。
