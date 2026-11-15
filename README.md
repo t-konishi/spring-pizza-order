@@ -97,9 +97,22 @@ Oracle Databaseの`PIZZA`スキーマに、以下の5テーブルを使用して
 - Oracle Database内の`PIZZA`スキーマと必要なテーブル
 - Maven Wrapperを実行できる環境
 
-本リポジトリには、データベースのDDLおよび初期データ投入用スクリプトは含まれていません。
+### データベーススキーマの作成
 
-アプリケーションを起動する前に、Oracle Databaseと`PIZZA`スキーマを準備する必要があります。
+本リポジトリには、Oracle AI Database 26ai Freeで使用する5テーブルのDDLを含めています。
+
+- [`db/schema.sql`](db/schema.sql)：テーブル作成用DDL
+- [`db/export_ddl.sql`](db/export_ddl.sql)：既存OracleからDDLを抽出するSQL*Plusスクリプト
+
+`schema.sql`には、`CUSTOMERS`、`PIZZAS`、`ORDERS`、`ORDER_ITEMS`、`PAYMENTS`のテーブル定義と各種制約が含まれています。
+
+Oracleの`FREEPDB1`に`PIZZA`ユーザーを作成し、`CREATE TABLE`権限および表領域の割当を設定したうえで、`PIZZA`スキーマに`schema.sql`を実行してください。
+
+DDLはOracleの`DBMS_METADATA.GET_DDL`から生成したもので、別の空スキーマにおいて5テーブルと主キー・外部キー等の制約を再作成できることを検証済みです。
+
+なお、DDLは空のスキーマでの初回実行を想定しています。既存テーブルがある環境では再実行しないでください。
+
+初期データ投入用SQLは含まれていません。テーブル作成後、管理画面からピザ商品・顧客を登録して注文処理を試すことができます。
 
 ### データベース接続設定
 

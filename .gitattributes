@@ -15,3 +15,4 @@
 
 # Source code and configuration
 *.md text eol=lf
+*.sql text eol=lf
